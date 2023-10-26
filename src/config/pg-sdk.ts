@@ -33,7 +33,8 @@ export const config: ConfigProps = {
     projectId: 'crefisa',
     mobileSdkAppId: '3:526108:js',
     hostname: 'http://localhost:3000',
-    hostInfo: 'nRMqSJJeWMZ0K4n9Dxs/Zhb5RslAxes+pmH0gJgmVtZdwNyOQ5wThBl1Sd+1hKs+D0gFCgAOsDVc6cWdPbtDMQ==',
+    hostInfo:
+      'nRMqSJJeWMZ0K4n9Dxs/Zhb5RslAxes+pmH0gJgmVtZdwNyOQ5wThBl1Sd+1hKs+D0gFCgAOsDVc6cWdPbtDMQ==',
     hostKey: 'F/c0dcA4RT2GnaqxrwpFpUnaJkVrKXLwRvUmlbwAVERLOdUWVer6rXC4/iWPu0Ou',
   },
   builder: {
@@ -52,6 +53,6 @@ export const config: ConfigProps = {
     colorTextButtons: '#221C46',
     backgroundColorBoxMessage: '#777',
     colorTextBoxMessage: '#FFF',
-    htmlPopupLoading:  `<div style="position: absolute; top: 45%; right: 50%; transform: translate(50%, -50%); z-index: 10; text-align: center;">Carregando câmera</div>`,
-  }
+    htmlPopupLoading: `<div style="position: absolute; top: 45%; right: 50%; transform: translate(50%, -50%); z-index: 10; text-align: center;">Carregando câmera</div>`,
+  },
 }
