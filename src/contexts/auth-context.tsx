@@ -1,6 +1,6 @@
 import React, { useState, createContext, useEffect } from 'react'
 import { api } from '@/services/api'
-import { redirect } from 'react-router-dom'
+import axios from 'axios'
 
 type AuthProviderProps = {
   children?: React.ReactNode
@@ -9,7 +9,7 @@ type AuthProviderProps = {
 type AuthContextData = {
   transactionId: string
   isAuthenticated: boolean
-  handleSendTransaction: (cpf: string) => void
+  setTransactionId: React.Dispatch<React.SetStateAction<string>>
 }
 
 export const AuthContext = createContext<AuthContextData>({} as AuthContextData)
@@ -24,11 +24,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const password = import.meta.env.VITE_PASSWORD
       const grantType = import.meta.env.VITE_GRANT_TYPE
 
-      const authResponse = await api.post('/authentication', {
-        username,
-        password,
-        grant_type: grantType,
-      })
+      const authResponse = await axios.post(
+        'https://integracao-sodexo-desenvolvimento.partner1.com.br/api/authentication',
+        {
+          username,
+          password,
+          grant_type: grantType,
+        },
+      )
 
       const accessToken = authResponse.data.objectReturn.access_token
       const bearerToken = `Bearer ${accessToken}`
@@ -40,6 +43,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       setIsAuthenticated(true)
     } catch (error: unknown) {
+      console.log({ error })
+
       api.interceptors.request.use((config) => {
         config.headers!.Authorization = ''
         return config
@@ -47,30 +52,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   }
 
-  async function handleSendTransaction(cpf: string) {
-    try {
-      const response = await api.post('/transaction', { cpf })
-      console.log({ response })
-      setTransactionId(response.data.objectReturn.transaction)
-      redirect('/selfie')
-    } catch (error) {
-      console.log({ error })
-    }
-  }
-
   useEffect(() => {
     if (!isAuthenticated) {
       authenticate()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [isAuthenticated])
 
   return (
     <AuthContext.Provider
       value={{
         isAuthenticated,
         transactionId,
-        handleSendTransaction,
+        setTransactionId,
       }}
     >
       {children}

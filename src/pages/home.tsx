@@ -3,14 +3,43 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { formatCPF } from '@/utils/text'
+import { api } from '@/services/api'
+import { useNavigate } from 'react-router-dom'
 import { AuthContext } from '@/contexts/auth-context'
 
 export function Home() {
-  const { handleSendTransaction } = useContext(AuthContext)
-
+  const { setTransactionId } = useContext(AuthContext)
+  const navigate = useNavigate()
   const [canSend, setCanSend] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [inputValue, setInputValue] = useState('')
   const [formattedInputValue, setFormattedInputValue] = useState('')
+
+  async function handleSendTransaction(cpf: string) {
+    setIsLoading(true)
+    try {
+      const postResponse = await api.post('/transaction', { cpf })
+      console.log({ postResponse })
+
+      const transactionId = postResponse.data.objectReturn.transactionId
+      setTransactionId(transactionId)
+
+      const getResponse = await api.get(`/transaction/${transactionId}`)
+
+      const transactionStatus = getResponse.data.objectReturn.result.status
+
+      console.log({ transactionStatus })
+
+      if (transactionStatus === 3) {
+        navigate('/selfie')
+      } else {
+        setIsLoading(false)
+      }
+    } catch (error) {
+      console.log({ error })
+      setIsLoading(false)
+    }
+  }
 
   function handleSetInput(inputValue: string) {
     // Remover todos os caracteres não numéricos
@@ -40,16 +69,17 @@ export function Home() {
             placeholder="000.000.000-00"
             maxLength={14}
             value={formattedInputValue}
+            disabled={isLoading}
             onChange={(e) => handleSetInput(e.target.value)}
           />
         </div>
 
         <Button
           onClick={() => handleSendTransaction(inputValue)}
-          disabled={!canSend}
+          disabled={!canSend || isLoading}
           className="w-full"
         >
-          Enviar
+          {isLoading ? 'Enviando' : 'Enviar'}
         </Button>
       </div>
     </div>

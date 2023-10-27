@@ -10,11 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@partner-group/sdk-web": "^1.0.2",
-    "@partner-group/sdk-web-local": "file:../pg-sdk",
+    "@partner-group/sdk-web": "^1.1.6",
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-slot": "^1.0.2",
-    "axios": "^1.5.1",
+    "axios": "^1.6.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "lucide-react": "^0.289.0",

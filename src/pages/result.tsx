@@ -1,11 +1,12 @@
 import { useState, useEffect, useCallback, useContext } from 'react'
 import { Button } from '@/components/ui/button'
 import { api } from '@/services/api'
-import { redirect } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { AuthContext } from '@/contexts/auth-context'
 import clsx from 'clsx'
 
 export function Result() {
+  const navigate = useNavigate()
   const { transactionId } = useContext(AuthContext)
   const [approvedStatus, setApprovedStatus] = useState(
     'Transação em processamento',
@@ -28,7 +29,13 @@ export function Result() {
   }, [])
 
   useEffect(() => {
-    handleGetResult()
+    const getResultInterval = setInterval(() => {
+      handleGetResult()
+    }, 2000)
+
+    return () => {
+      clearInterval(getResultInterval)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -36,14 +43,12 @@ export function Result() {
     <div className="grid place-items-center h-screen w-full">
       <div className="flex flex-col w-full max-w-[300px] gap-3">
         <div className="flex flex-col w-full">
-          <small className="text-primary-foreground font-bold">
-            Transaction ID
-          </small>
+          <p className="text-primary-foreground font-bold">Transaction ID</p>
           <p className="font-semibold">{transactionId}</p>
         </div>
 
         <div className="flex flex-col w-full">
-          <small className="text-primary-foreground font-bold">Status</small>
+          <p className="text-primary-foreground font-bold">Status</p>
           <p
             className={clsx(
               'font-semibold',
@@ -57,7 +62,7 @@ export function Result() {
         </div>
 
         <Button
-          onClick={() => redirect('/')}
+          onClick={() => navigate('/')}
           disabled={isApproved === null}
           className="w-full"
         >
