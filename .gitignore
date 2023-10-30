@@ -8,7 +8,7 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
-src/config/*
+src/config/pg-sdk.ts
 public/pg-sdk/*
 dist
 dist-ssr
