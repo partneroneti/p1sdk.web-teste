@@ -19,23 +19,10 @@ export function Home() {
     setIsLoading(true)
     try {
       const postResponse = await api.post('/transaction', { cpf })
-      console.log({ postResponse })
 
       const transactionId = postResponse.data.objectReturn.transactionId
       setTransactionId(transactionId)
       navigate('/resultado')
-
-      // const getResponse = await api.get(`/transaction/${transactionId}`)
-
-      // const transactionStatus = getResponse.data.objectReturn.result.status
-
-      // console.log({ transactionStatus })
-
-      // if (transactionStatus === 3) {
-      //   navigate('/selfie')
-      // } else {
-      //   setIsLoading(false)
-      // }
     } catch (error) {
       console.log({ error })
       setIsLoading(false)
