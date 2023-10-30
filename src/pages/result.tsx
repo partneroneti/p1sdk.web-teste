@@ -16,24 +16,18 @@ export function Result() {
   const handleGetResult = useCallback(async () => {
     try {
       const getResponse = await api.get(`/transaction/${transactionId}`)
-      const responseData = getResponse.data.objectReturn
+      const result = getResponse.data.objectReturn.result
 
-      const transactionStatus = responseData.result.status
-      const historicalBaseStatus = responseData.historicalBase?.status
-
-      if (historicalBaseStatus) {
-        const hasHistoricalBaseSucceded = historicalBaseStatus === 1
-
-        const historicalBaseStatusDescription =
-          responseData.historicalBase.statusDescription
-
-        setApprovedStatus(historicalBaseStatusDescription)
-        setIsApproved(hasHistoricalBaseSucceded)
-        return
+      if (result.status === 3) {
+        return navigate('/selfie')
       }
 
-      if (transactionStatus === 3) {
-        navigate('/selfie')
+      if (result.status) {
+        const resultDescription = result.statusDescription
+        const hasSucceeded = result.status === 1
+
+        setApprovedStatus(resultDescription)
+        setIsApproved(hasSucceeded)
       }
     } catch (error) {
       console.log({ error })
