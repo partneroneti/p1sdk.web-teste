@@ -4,7 +4,10 @@ WORKDIR /code
 COPY package.json ./
 COPY package-lock.json ./
 
-ENV VITE_API_URL=https://integracao-sodexo-desenvolvimento.partner1.com.br/api
+ENV VITE_API_URL=
+ENV VITE_USERNAME=
+ENV VITE_PASSWORD=
+ENV VITE_GRANT_TYPE=
 
 RUN npm i
 
