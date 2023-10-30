@@ -18,5 +18,5 @@ RUN npm run build
 FROM --platform=linux/amd64 nginx:alpine as deploy
 WORKDIR /usr/share/nginx/html
 RUN rm -rf ./*
-COPY --from=dist /code/dist .
+COPY --from=build /code/dist .
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
