@@ -15,23 +15,37 @@ export function Result() {
 
   const handleGetResult = useCallback(async () => {
     try {
-      const response = await api.get('/transaction')
-      console.log({ response })
+      const getResponse = await api.get(`/transaction/${transactionId}`)
+      const responseData = getResponse.data.objectReturn
 
-      const livenessHasSucceeded = response.data.objectReturn.liveness.success
-      const livenessStatus = livenessHasSucceeded ? 'APROVADO' : 'REPROVADO'
+      const transactionStatus = responseData.result.status
+      const historicalBaseStatus = responseData.historicalBase?.status
 
-      setApprovedStatus(livenessStatus)
-      setIsApproved(livenessHasSucceeded)
+      if (historicalBaseStatus) {
+        const hasHistoricalBaseSucceded = historicalBaseStatus === 1
+
+        const historicalBaseStatusDescription =
+          responseData.historicalBase.statusDescription
+
+        setApprovedStatus(historicalBaseStatusDescription)
+        setIsApproved(hasHistoricalBaseSucceded)
+        return
+      }
+
+      if (transactionStatus === 3) {
+        navigate('/selfie')
+      }
     } catch (error) {
       console.log({ error })
     }
-  }, [])
+  }, [navigate, transactionId])
 
   useEffect(() => {
+    if (!transactionId) navigate('/')
+
     const getResultInterval = setInterval(() => {
       handleGetResult()
-    }, 2000)
+    }, 10000)
 
     return () => {
       clearInterval(getResultInterval)
@@ -41,14 +55,16 @@ export function Result() {
 
   return (
     <div className="grid place-items-center h-screen w-full">
-      <div className="flex flex-col w-full max-w-[300px] gap-3">
+      <div className="flex flex-col w-full max-w-[350px] gap-3">
         <div className="flex flex-col w-full">
-          <p className="text-primary-foreground font-bold">Transaction ID</p>
-          <p className="font-semibold">{transactionId}</p>
+          <p className="text-primary-foreground font-bold text-sm">
+            Transaction ID
+          </p>
+          <p className="font-semibold text-gray-500">{transactionId}</p>
         </div>
 
         <div className="flex flex-col w-full">
-          <p className="text-primary-foreground font-bold">Status</p>
+          <p className="text-primary-foreground font-bold text-sm">Status</p>
           <p
             className={clsx(
               'font-semibold',

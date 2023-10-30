@@ -23,18 +23,19 @@ export function Home() {
 
       const transactionId = postResponse.data.objectReturn.transactionId
       setTransactionId(transactionId)
+      navigate('/resultado')
 
-      const getResponse = await api.get(`/transaction/${transactionId}`)
+      // const getResponse = await api.get(`/transaction/${transactionId}`)
 
-      const transactionStatus = getResponse.data.objectReturn.result.status
+      // const transactionStatus = getResponse.data.objectReturn.result.status
 
-      console.log({ transactionStatus })
+      // console.log({ transactionStatus })
 
-      if (transactionStatus === 3) {
-        navigate('/selfie')
-      } else {
-        setIsLoading(false)
-      }
+      // if (transactionStatus === 3) {
+      //   navigate('/selfie')
+      // } else {
+      //   setIsLoading(false)
+      // }
     } catch (error) {
       console.log({ error })
       setIsLoading(false)
