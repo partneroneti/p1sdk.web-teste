@@ -1,0 +1,39 @@
+
+#DOM_FT_feedbackBarContainer {
+  background-color: #777 !important;
+  box-shadow: none !important;
+}
+
+#DOM_FT_getReadyActionButton {
+  transform: translate(-50%, 40px) !important;
+  border: 3px solid #221C46 !important;
+  border-radius: 0 !important;
+  font-weight: bold !important;
+  cursor: pointer !important;
+}
+
+#DOM_FT_getReadyActionButton:disabled, #DOM_FT_getReadyActionButton[disabled] {
+  border-color:#221C4680 !important;
+}
+
+#DOM_FT_readyScreenInnerContainer > div {
+  justify-content: space-between !important;
+  height: 100% !important;
+}
+
+#DOM_FT_readyScreenInnerContainer {
+  padding: 7.5px 15px 30px !important;
+}
+
+#DOM_FT_mainInterfaceNonOverlayContainer, 
+#DOM_FT_frameContainer, 
+#DOM_FT_getReadyAndRetryScreenContainer, 
+#DOM_FT_getReadyScreen {
+  overflow: visible !important;
+}
+
+.facetec-action-button:disabled, .facetec-action-button[disabled] {
+  color:#221C4680 !important;
+  background-color:#00EB5E80 !important;
+  border-color:#fff !important;
+}
